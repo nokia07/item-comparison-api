@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,8 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.hackerrank.products.application.domain.model.Product;
 import com.hackerrank.products.application.domain.usecase.ProductUseCase;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
-
+@Validated
 @RestController
 @RequestMapping("api/v1/products")
 @RequiredArgsConstructor
@@ -25,8 +27,12 @@ public class ProductController {
 
 	@GetMapping("/compare")
 	public ResponseEntity<List<Map<String, Object>>> compare(
-			@RequestParam List<Long> ids,
-			@RequestParam List<String> fields) {
+			@RequestParam(required = false)
+            @NotEmpty(message = "ids parameter is required and cannot be empty")
+            List<Long> ids,
+			@RequestParam(required = false)
+            @NotEmpty(message = "fields parameter is required and cannot be empty")
+            List<String> fields) {
                 
         List<Product> products = productUseCase.compareProducts(ids);
 		List<Map<String, Object>> response = new ArrayList<>();

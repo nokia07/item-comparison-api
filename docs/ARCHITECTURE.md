@@ -8,6 +8,7 @@ Hexagonal Architecture (Clean Architecture inspired)
 - domain: Business models and rules
 - application: Use cases
 - infrastructure: Database, JPA, REST Controllers
+- H2 persistent layer
 
 ## Rules
 
