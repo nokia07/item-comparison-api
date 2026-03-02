@@ -14,22 +14,52 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hackerrank.products.application.domain.model.Product;
 import com.hackerrank.products.application.domain.usecase.ProductUseCase;
+import com.hackerrank.products.infrastructure.adapter.web.error.ApiErrorResponse;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
+
 @Validated
 @RestController
 @RequestMapping("api/v1/products")
 @RequiredArgsConstructor
+@Tag(name = "Products", description = "Operations for product comparison")
 public class ProductController {
 
 	private final ProductUseCase productUseCase;
 
 	@GetMapping("/compare")
+	@Operation(
+			summary = "Compare products",
+			description = "Compares products by ids and returns only the requested fields.")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Products compared successfully"),
+			@ApiResponse(responseCode = "400", description = "Invalid request parameters",
+					content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))),
+			@ApiResponse(responseCode = "404", description = "Product not found",
+					content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))),
+			@ApiResponse(responseCode = "500", description = "Unexpected server error",
+					content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
+	})
 	public ResponseEntity<List<Map<String, Object>>> compare(
+			@Parameter(
+					description = "Product ids to compare. Example: 1,2",
+					example = "1,2",
+					required = true)
 			@RequestParam(required = false)
             @NotEmpty(message = "ids parameter is required and cannot be empty")
             List<Long> ids,
+			@Parameter(
+					description = "Fields to return in comparison. Example: name,price,engine,batteryCapacity",
+					example = "name,price,engine,batteryCapacity",
+					required = true)
 			@RequestParam(required = false)
             @NotEmpty(message = "fields parameter is required and cannot be empty")
             List<String> fields) {

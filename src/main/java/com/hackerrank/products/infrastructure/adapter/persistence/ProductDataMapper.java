@@ -18,17 +18,17 @@ public class ProductDataMapper {
     private final ObjectMapper objectMapper;
 
     public Product toDomain(ProductData data) {
-        return Product.builder()
-                .id(data.getId())
-                .name(data.getName())
-                .description(data.getDescription())
-                .price(data.getPrice())
-                .size(data.getSize())
-                .weight(data.getWeight())
-                .color(data.getColor())
-                .category(data.getCategory())
-                .attributes(parseAttributes(data.getAttributesJson()))
-                .build();
+        Product product = new Product();
+        product.setId(data.getId());
+        product.setName(data.getName());
+        product.setDescription(data.getDescription());
+        product.setPrice(data.getPrice());
+        product.setSize(data.getSize());
+        product.setWeight(data.getWeight());
+        product.setColor(data.getColor());
+        product.setCategory(data.getCategory());
+        product.setAttributes(parseAttributes(data.getAttributesJson()));
+        return product;
     }
 
     private Map<String, Object> parseAttributes(String attributesJson) {
