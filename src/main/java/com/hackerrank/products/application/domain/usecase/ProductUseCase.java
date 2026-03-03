@@ -13,10 +13,18 @@ public class ProductUseCase {
 
     private final ProductRepository productRepository;    
 
-    public List<Product> compareProducts(List<Long> productIds) {
-        List<Product> products = productRepository.compare(productIds);
+    public List<Product> getProductsByIds(List<Long> productIds) {
+        List<Product> products = productRepository.findByIdIn(productIds);
         if (products.isEmpty()) {
             throw new ProductNotFoundException("" + productIds);
+        }
+        return products;
+    }
+
+    public List<Product> getProductsByCategory(String category) {
+        List<Product> products = productRepository.findByCategory(category);
+        if (products.isEmpty()) {
+            throw new ProductNotFoundException("No products found for category: " + category);
         }
         return products;
     }

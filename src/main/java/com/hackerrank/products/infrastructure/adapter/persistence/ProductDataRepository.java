@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductDataRepository extends JpaRepository<ProductData, Long> {
     List<ProductData> findByIdIn(List<Long> ids);
+    List<ProductData> findByCategory(String category);
 }

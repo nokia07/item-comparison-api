@@ -1,4 +1,4 @@
-package com.hackerrank.products.config;
+package com.hackerrank.products.application.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

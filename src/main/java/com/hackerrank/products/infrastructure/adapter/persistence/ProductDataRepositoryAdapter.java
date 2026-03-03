@@ -18,9 +18,16 @@ public class ProductDataRepositoryAdapter implements ProductRepository {
     private final ProductDataMapper productDataMapper;
 
     @Override
-    public List<Product> compare(List<Long> productIds) {
+    public List<Product> findByIdIn(List<Long> productIds) {
         List<ProductData> productDataList = productRepository.findByIdIn(productIds);
         return productDataList.stream()
+                .map(productDataMapper::toDomain)
+                .toList();
+    }
+
+    @Override
+    public List<Product> findByCategory(String category) {
+        return productRepository.findByCategory(category).stream()
                 .map(productDataMapper::toDomain)
                 .toList();
     }
